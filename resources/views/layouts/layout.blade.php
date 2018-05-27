@@ -1,6 +1,6 @@
 <html>
     <head>
-        <link rel="stylesheet" href="/css/app.css">
+        <link rel="stylesheet" href="{{url('css/app.css')}}">
     </head>
     <body>
         <div class="row">
@@ -9,6 +9,6 @@
                 @yield('content')
             </div>
         </div>
-        <script type="text/javascript" src="/js/app.js"></script>
+        <script type="text/javascript" src="{{url('js/app.js')}}"></script>
     </body>
 </html>
