@@ -21,12 +21,11 @@ class ClientsController extends Controller
 
     public function create()
     {
-        return view('admin.clients.create');
+        return view('admin.clients.create',['client'=> new Client()]);
     }
 
     public function store(Request $request)
     {
-
         $this->_validate($request);
         $data = $request->all();
         $data['defaulter'] = $request->has('defaulter');
