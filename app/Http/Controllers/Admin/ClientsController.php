@@ -33,9 +33,9 @@ class ClientsController extends Controller
         return redirect()->route('clients.index');
     }
 
-    public function show($id)
+    public function show(Client $client)
     {
-        //
+        return view('admin.clients.show', compact('client'));
     }
 
     public function edit(Client $client) //Route Model Binding implícito
