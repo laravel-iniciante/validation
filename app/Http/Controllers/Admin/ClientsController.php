@@ -38,15 +38,17 @@ class ClientsController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(Client $client) //Route Model Binding implícito
     {
-        $client = Client::findOrFail($id);
+        // Route Model Binding implicito
+        // $client = Client::findOrFail($id);
         return view('admin.clients.edit', compact('client'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client) //Route Model Binding implícito
     {
-        $client = Client::findOrFail($id);
+        // Route Model Binding
+        // $client = Client::findOrFail($client);
         $this->_validate($request);
         $data = $request->all();
         $data['defaulter'] = $request->has('defaulter');
