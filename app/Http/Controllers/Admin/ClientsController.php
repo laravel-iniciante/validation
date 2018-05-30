@@ -57,9 +57,10 @@ class ClientsController extends Controller
         return redirect()->route('clients.index');
     }
 
-    public function destroy($id)
+    public function destroy(Client $client) //Route Model Binding implícito
     {
-        //
+        $client->delete();
+        return redirect()->route('clients.index');
     }
 
     protected function _validate(Request $request){
