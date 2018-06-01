@@ -26,4 +26,8 @@ class Client extends Model
                 'marital_status',
                 'phisical_disability',
     ];
+
+    public static function getClientType($type){
+        return $type == Client::TYPE_LEGAL ? $type : Client::TYPE_INDIVIDUAL;
+    }
 }

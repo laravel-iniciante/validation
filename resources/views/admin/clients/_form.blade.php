@@ -21,39 +21,49 @@
     <input class="form-control" type="text" name="phone" value="{{old('phone',$client->phone)}}">
 </div>
 
-<div class="form-group">
+@if($clientType == \App\Client::TYPE_INDIVIDUAL)
+    <div class="form-group">
+        <label>Data de nascimento</label>
+        <input class="form-control" type="date" name="date_birth" value="{{old('date_birth',$client->date_birth)}}">
+    </div>
+    <div class="form-group">
+        @php
+            $maritalStatus = $client->marital_status;
+        @endphp
+
+        <label>Estado civil</label>
+        <select class="form-control" name="marital_state">
+            <option value="">Selecione o estado civil </option>
+            <option value="1" {{old('marital_state', $maritalStatus) == '1' ? 'selected="selected"' : ''}}>Solteiro</option>
+            <option value="2" {{old('marital_state', $maritalStatus) == '2' ? 'selected="selected"' : ''}}>Casado</option>
+            <option value="3" {{old('marital_state', $maritalStatus) == '3' ? 'selected="selected"' : ''}}>Divorciado</option>
+        </select>
+    </div>
+
+
     @php
-        $maritalStatus = $client->marital_status;
+        $sex = $client->sex;
     @endphp
+    <div class="radio">
+        <label><input type="radio" name="sex" value="m" {{old('sex', $sex) == 'm' ? 'checked="checked"' : ''}}>Masculino</label>
+    </div>
 
-    <label>Estado civil</label>
-    <select class="form-control" name="marital_state">
-        <option value="">Selecione o estado civil </option>
-        <option value="1" {{old('marital_state', $maritalStatus) == '1' ? 'selected="selected"' : ''}}>Solteiro</option>
-        <option value="2" {{old('marital_state', $maritalStatus) == '2' ? 'selected="selected"' : ''}}>Casado</option>
-        <option value="3" {{old('marital_state', $maritalStatus) == '3' ? 'selected="selected"' : ''}}>Divorciado</option>
-    </select>
-</div>
+    <div class="radio">
+        <label><input type="radio" name="sex" value="f" {{old('sex', $sex) == 'f' ? 'checked="checked"' : ''}}>Feminino</label>
+    </div>
 
-<div class="form-group">
-    <label>Data de nascimento</label>
-    <input class="form-control" type="date" name="date_birth" value="{{old('date_birth',$client->date_birth)}}">
-</div>
-@php
-    $sex = $client->sex;
-@endphp
-<div class="radio">
-    <label><input type="radio" name="sex" value="m" {{old('sex', $sex) == 'm' ? 'checked="checked"' : ''}}>Masculino</label>
-</div>
+    <div class="form-group">
+        <label>Deficiência física</label>
+        <input class="form-control" type="text" name="physical_disability" value="{{old('physical_disability', $client->physical_disability)}}">
+    </div>
+@else
 
-<div class="radio">
-    <label><input type="radio" name="sex" value="f" {{old('sex', $sex) == 'f' ? 'checked="checked"' : ''}}>Feminino</label>
-</div>
+    <div class="form-group">
+        <label>Nome fantasia</label>
+        <input class="form-control" type="text" name="company_name" value="{{old('company_name',$client->company_name)}}">
+    </div>
 
-<div class="form-group">
-    <label>Deficiência física</label>
-    <input class="form-control" type="text" name="physical_disability" value="{{old('physical_disability', $client->physical_disability)}}">
-</div>
+@endif
 
 <div class="checkbox">
     <label><input class="form-control" type="checkbox" name="defaulter" {{old('defaulter', $client->defaulter)  ? 'checked="checked"' : ''}}> Inadimplente </label>

@@ -19,9 +19,10 @@ class ClientsController extends Controller
         return view('admin.clients.index', compact('clients'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.clients.create',['client'=> new Client()]);
+        $clientType = Client::getClientType($request->client_type);
+        return view('admin.clients.create',['client'=> new Client(), 'clientType' => $clientType ]);
     }
 
     public function store(Request $request)
