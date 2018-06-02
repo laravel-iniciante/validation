@@ -1,6 +1,9 @@
 
 {{csrf_field()}}
 
+<input type="hidden" name="client_type" value="{{$clientType}}">
+
+
 <div class="form-group">
     <label>Nome</label>
     <input class="form-control" type="text" name="name" value="{{old('name',$client->name)}}">

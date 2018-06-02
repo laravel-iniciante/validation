@@ -27,9 +27,9 @@ class ClientsController extends Controller
 
     public function store(Request $request)
     {
-        $this->_validate($request);
-        $data = $request->all();
+        $data = $this->_validate($request);
         $data['defaulter'] = $request->has('defaulter');
+        $data['clinet_type'] = $Client::getClientType($request->client_type);
         Client::create($data);
         return redirect()->route('clients.index');
     }
@@ -43,15 +43,15 @@ class ClientsController extends Controller
     {
         // Route Model Binding implicito
         // $client = Client::findOrFail($id);
-        return view('admin.clients.edit', compact('client'));
+        $clientType = $client->client_type;
+        return view('admin.clients.edit', compact('client','clientType'));
     }
 
     public function update(Request $request, Client $client) //Route Model Binding implícito
     {
         // Route Model Binding
         // $client = Client::findOrFail($client);
-        $this->_validate($request);
-        $data = $request->all();
+        $data = $this->_validate($request);
         $data['defaulter'] = $request->has('defaulter');
         $client->fill($data);
         $client->save();
@@ -65,17 +65,32 @@ class ClientsController extends Controller
     }
 
     protected function _validate(Request $request){
+
+        $clientType = Client::getClientType($request->client_type);
+
         $maritalStatus = implode( ',', array_keys(Client::MARITAL_STATUS) );
-        $this->validate($request, [
+
+        $rules = [
             'name'                  => 'required|max:255',
             'document_number'       => 'required',
             'email'                 => 'required|email',
             'phone'                 => 'required',
+        ];
+
+        $rulesIndividual = [
             'date_birth'            => 'required|date',
             'marital_state'         => "required|in: $maritalStatus",
             'sex'                   => 'required:in: s,m',
             'physical_disability'   => 'max:255'
-        ]);
+        ];
+
+        $rulesLegal = [
+            'company_name'   => 'required|max:255'
+        ];
+
+        $rulesFinal = ($clientType == Client::TYPE_INDIVIDUAL ) ? $rules + $rulesIndividual : $rules + $rulesLegal;
+
+        return $this->validate($request, $rulesFinal );
     }
 
 }

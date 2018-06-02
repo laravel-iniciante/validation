@@ -25,6 +25,8 @@ class Client extends Model
                 'sex',
                 'marital_status',
                 'phisical_disability',
+                'client_type',
+                'company_name'
     ];
 
     public static function getClientType($type){
