@@ -66,17 +66,17 @@ class ClientsController extends Controller
 
     protected function _validate(Request $request){
 
-        $clientType = Client::getClientType($request->client_type);
-
-        $maritalStatus = implode( ',', array_keys(Client::MARITAL_STATUS) );
+        $client     = $request->route('client'); // 'client' = parametro que está na rota + route model binding
+        $clientId   = $client instanceof Client ? $client->id : null;
 
         $rules = [
             'name'                  => 'required|max:255',
-            'document_number'       => 'required',
+            'document_number'       => "required|unique:clients,document_number, $clientId",
             'email'                 => 'required|email',
             'phone'                 => 'required',
         ];
 
+        $maritalStatus = implode( ',', array_keys(Client::MARITAL_STATUS) );
         $rulesIndividual = [
             'date_birth'            => 'required|date',
             'marital_state'         => "required|in: $maritalStatus",
@@ -88,6 +88,7 @@ class ClientsController extends Controller
             'company_name'   => 'required|max:255'
         ];
 
+        $clientType = Client::getClientType($request->client_type);
         $rulesFinal = ($clientType == Client::TYPE_INDIVIDUAL ) ? $rules + $rulesIndividual : $rules + $rulesLegal;
 
         return $this->validate($request, $rulesFinal );
